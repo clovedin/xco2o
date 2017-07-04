@@ -13,6 +13,8 @@ public class GroupMember {
     private Integer level;
     /* 组内昵称 */
     private String alias;
+    /* 加入时间 */
+    private Long createTime;
 
     public Long getGroupId() {
         return groupId;
@@ -44,5 +46,13 @@ public class GroupMember {
 
     public void setAlias(String alias) {
         this.alias = alias;
+    }
+
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
     }
 }

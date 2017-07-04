@@ -1,26 +1,12 @@
-package cn.xc2o.live.entity;
+package cn.xc2o.live.dto;
 
 /**
- *
  * Created by cc on 2017/7/3.
  */
-public class PostsInfo extends LongId {
-    /* 所属组 */
-    private Long groupId;
-    /* 普通贴 */
-    private Integer type = 0;
-    /* 标题 */
+public class PostsCreateReq {
+    private Integer type;
     private String title;
-    /* 内容 */
     private String content;
-
-    public Long getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
-    }
 
     public Integer getType() {
         return type;
