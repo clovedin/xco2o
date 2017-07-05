@@ -1,9 +1,12 @@
 package cn.xc2o.live.entity;
 
+import org.apache.ignite.cache.query.annotations.QuerySqlField;
+
 /**
  * Created by cc on 2017/7/3.
  */
 public class PostsReply extends LongId {
+    @QuerySqlField
     private Long postsId;
     /* 内容 */
     private String content;

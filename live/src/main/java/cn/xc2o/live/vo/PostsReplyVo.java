@@ -1,13 +1,24 @@
 package cn.xc2o.live.vo;
 
+import java.io.Serializable;
+
 /**
  * Created by cc on 2017/7/3.
  */
-public class PostsReplyVo {
+public class PostsReplyVo implements Serializable {
+    private Integer type;
     private String content;
     private Integer floor;
     private String time;
     private UserBaseVo user;
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
     public String getContent() {
         return content;

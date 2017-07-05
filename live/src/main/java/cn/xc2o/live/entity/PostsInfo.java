@@ -1,18 +1,21 @@
 package cn.xc2o.live.entity;
 
+import org.apache.ignite.cache.query.annotations.QuerySqlField;
+
 /**
  *
  * Created by cc on 2017/7/3.
  */
 public class PostsInfo extends LongId {
     /* 所属组 */
+    @QuerySqlField
     private Long groupId;
     /* 普通贴 */
+    @QuerySqlField
     private Integer type = 0;
     /* 标题 */
+    @QuerySqlField
     private String title;
-    /* 内容 */
-    private String content;
 
     public Long getGroupId() {
         return groupId;
@@ -36,13 +39,5 @@ public class PostsInfo extends LongId {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 }

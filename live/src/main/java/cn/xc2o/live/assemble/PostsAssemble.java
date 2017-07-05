@@ -21,11 +21,11 @@ public class PostsAssemble {
     public static PostsInfo fromCreateReq(Long userId, Long groupId, PostsCreateReq req) {
         PostsInfo postsInfo = new PostsInfo();
         postsInfo.setId(SampleIdUtils.gen());
+        postsInfo.setGroupId(groupId);
         postsInfo.setType(LiveConstant.PostType_Normal);
         postsInfo.setTitle(req.getTitle());
-        postsInfo.setContent(req.getContent());
         postsInfo.setCreateBy(userId);
-        postsInfo.setCreateTime(new Date().getTime());
+        postsInfo.setCreateTime(System.currentTimeMillis());
         return postsInfo;
     }
 

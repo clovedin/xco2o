@@ -1,7 +1,9 @@
 package cn.xc2o.live.service;
 
 import cn.xc2o.live.assemble.PostsAssemble;
+import cn.xc2o.live.assemble.ReplyAssemble;
 import cn.xc2o.live.assemble.UserAssemble;
+import cn.xc2o.live.common.ResultConstant;
 import cn.xc2o.live.dao.PostsInfoRepository;
 import cn.xc2o.live.dao.PostsReplyRepository;
 import cn.xc2o.live.dao.UserInfoRepository;
@@ -16,9 +18,14 @@ import cn.xc2o.live.vo.PostsDetailVo;
 import cn.xc2o.live.vo.PostsReplyVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 
-import java.awt.print.Pageable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by cc on 2017/7/4.
@@ -38,6 +45,8 @@ public class PostsServiceImpl implements PostsService {
         Result<PostsCreateRsp> result = new Result<>();
         PostsInfo postsInfo = PostsAssemble.fromCreateReq(userId, groupId, req);
         postsInfo = postsInfoRepository.save(postsInfo.getId(), postsInfo);
+        PostsReply postsReply = ReplyAssemble.fromCreateReq(userId, groupId, postsInfo.getId(), req);
+        postsReply = postsReplyRepository.save(postsReply.getId(), postsReply);
         PostsCreateRsp response = PostsAssemble.toCreateRsp(postsInfo);
         result.setData(response);
         return result;
@@ -47,17 +56,22 @@ public class PostsServiceImpl implements PostsService {
     public Result<PostsDetailVo> detail(Long group, Long id, org.springframework.data.domain.Pageable pageable) {
         Result<PostsDetailVo> result = new Result<>();
         PostsInfo postsInfo = postsInfoRepository.findOne(id);
-        Page<PostsReply> replyPage = postsReplyRepository.findByPostsId(postsInfo.getId(), pageable);
-        Page<PostsReplyVo> replyVos = replyPage.map(reply -> {
-            PostsReplyVo replyVo = new PostsReplyVo();
-            UserInfo userInfo = userInfoRepository.findOne(reply.getCreateBy());
-            replyVo.setContent(reply.getContent());
-            replyVo.setFloor(reply.getFloor());
-            replyVo.setTime(DateUtils.frindlyTime(reply.getCreateTime()));
-            replyVo.setUser(UserAssemble.baseInfo(userInfo));
-            return replyVo;
-        });
-        PostsDetailVo data = PostsAssemble.detailVo(postsInfo, replyVos);
+        if (null == postsInfo){
+            result.setError(ResultConstant.NotFind);
+            return result;
+        }
+        List<PostsReplyVo> replyVos = null;
+        Long total = postsReplyRepository.countByPostsId(postsInfo.getId());
+        if (total > 0){
+            replyVos = new ArrayList<>();
+            List<PostsReply> replys = postsReplyRepository.findByPostsId(postsInfo.getId(), pageable);
+            replyVos = replys.stream().map(reply -> {
+                UserInfo userInfo = userInfoRepository.findOne(reply.getCreateBy());
+                return ReplyAssemble.entityToVo(postsInfo, userInfo, reply);
+            }).collect(Collectors.toList());
+        }
+        Page<PostsReplyVo> replyPage = new PageImpl<>(replyVos, pageable, total);
+        PostsDetailVo data = PostsAssemble.detailVo(postsInfo, replyPage);
         result.setData(data);
         return result;
     }

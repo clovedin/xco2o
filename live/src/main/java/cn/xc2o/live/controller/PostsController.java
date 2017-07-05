@@ -10,10 +10,7 @@ import cn.xc2o.live.vo.PostsDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -33,11 +30,11 @@ public class PostsController {
     }
 
     @RequestMapping(value = "/{group}", method = RequestMethod.POST)
-    public Result<PostsCreateRsp> posts(HttpSession session, @PathVariable Long group, PostsCreateReq req){
+    public Result<PostsCreateRsp> posts(HttpSession session, @PathVariable Long group, @RequestBody PostsCreateReq req){
         Result<PostsCreateRsp> result = new Result<>();
         Object seessionAttr = session.getAttribute(LiveConstant.LoginUserId);
         if (null == seessionAttr){
-            Long userId = (Long)seessionAttr;
+            Long userId = 101L;
             result = postsService.posts(userId, group, req);
         }else {
             result.setError(ResultConstant.NotLogin);

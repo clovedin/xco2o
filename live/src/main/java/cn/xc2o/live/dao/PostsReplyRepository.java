@@ -6,11 +6,15 @@ import org.apache.ignite.springdata.repository.config.RepositoryConfig;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * Created by cc on 2017/7/4.
  */
 @RepositoryConfig(cacheName = "PostsReplyCache")
 public interface PostsReplyRepository extends IgniteRepository<PostsReply, Long> {
 
-    Page<PostsReply> findByPostsId(Long postsId, Pageable pageable);
+    List<PostsReply> findByPostsId(Long postsId, Pageable pageable);
+
+    Long countByPostsId(Long id);
 }

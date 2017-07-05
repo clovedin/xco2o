@@ -2,11 +2,13 @@ package cn.xc2o.live.vo;
 
 import org.springframework.data.domain.Page;
 
+import java.io.Serializable;
+
 /**
  *
  * Created by cc on 2017/7/3.
  */
-public class PostsDetailVo {
+public class PostsDetailVo implements Serializable {
     private Long groupId;
     private Long postsId;
     private String title;

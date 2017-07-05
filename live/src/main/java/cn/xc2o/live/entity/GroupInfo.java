@@ -1,15 +1,20 @@
 package cn.xc2o.live.entity;
 
+import org.apache.ignite.cache.query.annotations.QuerySqlField;
+
 /**
  * 消息的基本组织单位
  * Created by cc on 2017/7/3.
  */
 public class GroupInfo extends LongId {
     /* 组类型 */
+    @QuerySqlField
     private Integer type;
     /* 所属 */
+    @QuerySqlField
     private Long parent;
     /* 组名 */
+    @QuerySqlField
     private String name;
     /* logo */
     private String logo;

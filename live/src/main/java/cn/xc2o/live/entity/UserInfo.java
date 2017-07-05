@@ -1,10 +1,14 @@
 package cn.xc2o.live.entity;
 
+import org.apache.ignite.cache.query.annotations.QuerySqlField;
+
 /**
  * Created by cc on 2017/7/4.
  */
 public class UserInfo extends LongId {
+    @QuerySqlField
     private String name;
+    @QuerySqlField
     private Integer age;
     private Integer sex;
 
